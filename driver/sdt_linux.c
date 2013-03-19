@@ -235,7 +235,7 @@ static char buf2[1024];
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 25)
 	fname = d_path(&file->f_path, buf, sizeof buf);
 #else
-        fname = d_path(file->f_dentry, file->f_vfsmnt, buf, sizeof buf);
+        fname = d_path(file->f_dentry, file->f_path.mnt, buf, sizeof buf);
 #endif
 	if (IS_ERR(fname)) {
 		fname = "(unknown)";
@@ -253,7 +253,7 @@ static char buf2[1024];
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3, 3, 0)
 	if (dentry_path_fn) {
 		static char buf3[1024];
-		mntname = dentry_path_fn(file->f_vfsmnt->mnt_mountpoint, buf3, sizeof buf3);
+		mntname = dentry_path_fn(file->f_path.mnt->mnt_mountpoint, buf3, sizeof buf3);
 	}
 #endif
 
@@ -261,7 +261,7 @@ static char buf2[1024];
 	finfo.f.fi_name = name ? name + 1 : "<none>";
 	finfo.f.fi_pathname = fname ? fname : "<unknown>";
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3, 3, 0)
-	finfo.f.fi_fs = file->f_vfsmnt->mnt_devname;
+	finfo.f.fi_fs = file->f_path.mnt->mnt_devname;
 #endif
 	finfo.f.fi_mount = mntname ? mntname : "<unknown>";
 
@@ -275,7 +275,7 @@ static char buf2[1024];
 	}
 
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3, 3, 0)
-	finfo.d.dev_pathname = (char *) file->f_vfsmnt->mnt_devname;
+	finfo.d.dev_pathname = (char *) file->f_path.mnt->mnt_devname;
 #endif
 	finfo.d.dev_statname = mntname;
 

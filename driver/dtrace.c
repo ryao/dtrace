@@ -4561,7 +4561,7 @@ PRINT_CASE(DIF_SUBR_LLTOSTR);
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 25)
 			regs[rd] = (uint64_t *) (void *) d_path(&fp->f_path, buf, sizeof buf);
 #else
-			regs[rd] = d_path(&fp->f_dentry, fp->f_vfsmnt, buf, sizeof buf);
+			regs[rd] = d_path(&fp->f_dentry, fp->f_path.mnt, buf, sizeof buf);
 #endif
 /*			regs[rd] = d_path(&get_current()->files->fdt->fd[1]->f_path, buf, sizeof buf);*/
 		}
