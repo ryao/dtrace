@@ -1,7 +1,7 @@
 #	$(DTRACE) -h -s simple_probes.d 
-CC=gcc -I../../uts/common -fPIC
+CFLAGS = -I../../uts/common -fPIC
 #BITS=-m64
-CFLAGS=$(BITS) $(BUILD_BITS)
+CFLAGS+=$(BITS) $(BUILD_BITS)
 BINDIR=../../$(BUILD_DIR)
 DTRACE=$(BINDIR)/dtrace
 DTRACE_DRTI_O=$(BINDIR)/drti.o
@@ -13,7 +13,7 @@ all:	$(BINDIR)/simple-c
 $(BINDIR)/simple-c: $(BINDIR)/simple_probes.o $(BINDIR)/simple.o \
 	$(BINDIR)/shlib.so $(DTRACE_DRTI_O) $(DTRACE_LIB)
 	cd $(BINDIR) ; \
-	$(CC) -Wl,-rpath `pwd -P` -Wl,--library-path `pwd -P` -o simple-c $(BITS) simple_probes.o simple.o shlib.so -ldl
+	$(CC) $(CFLAGS) -Wl,-rpath `pwd -P` -Wl,--library-path `pwd -P` -o simple-c $(BITS) simple_probes.o simple.o shlib.so -ldl
 
 $(BINDIR)/simple_probes.o: $(BINDIR)/simple.o simple_probes.d $(DTRACE_DRTI_O) $(DTRACE_LIB)
 	@. $(BINDIR)/config.sh ; \
@@ -27,11 +27,11 @@ $(BINDIR)/simple_probes.o: $(BINDIR)/simple.o simple_probes.d $(DTRACE_DRTI_O) $
 	mv simple_probes.o $(BINDIR)
 
 $(BINDIR)/simple.o: simple.c
-	$(CC) -c simple.c
+	$(CC) $(CFLAGS) -c simple.c
 	mv simple.o $(BINDIR)
 
 $(BINDIR)/shlib.so: shlib.c
-	$(CC) -c shlib.c
+	$(CC) $(CFLAGS) -c shlib.c
 	mv shlib.o $(BINDIR)
 	ld -G -o $(BINDIR)/shlib.so $(BINDIR)/shlib.o
 clean:

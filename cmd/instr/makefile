@@ -10,5 +10,5 @@ all:	$(BINDIR)/instr
 #   or vice versa.						     #
 ######################################################################
 $(BINDIR)/instr: instr.c
-	$(CC) -DUSERMODE -Dprintk=printf -DDIS_TEXT -I../../driver \
+	$(CC) $(CFLAGS) -DUSERMODE -Dprintk=printf -DDIS_TEXT -I../../driver \
 		-o $(BINDIR)/instr instr.c ../../driver/instr_size.c ../../driver/dis_tables.c

@@ -1,4 +1,4 @@
-CC=gcc -g $(BUILD_BITS)
+CFLAGS = -g $(BUILD_BITS)
 CPPFLAGS += -I. \
 	-I../../common/ctf \
 	-I../uts/common \
@@ -87,34 +87,34 @@ $(BINDIR)/dt_grammar.h $(LIB)(dt_grammar.o): dt_grammar.y $(H)
 	../tools/yacc.pl -d dt_grammar.y
 	mv y.tab.h $(BINDIR)/dt_grammar.h
 	mv y.tab.c dt_grammar.c
-	$(CC) -DYYDEBUG=1 -DYYERROR_VERBOSE $(CPPFLAGS) -c dt_grammar.c
+	$(CC) $(CFLAGS) -DYYDEBUG=1 -DYYERROR_VERBOSE $(CPPFLAGS) -c dt_grammar.c
 	ar rv $(LIB) dt_grammar.o
 	-rm -f dt_grammar.c dt_grammar.o
 
 #dt_grammar.h: $(LIB)(dt_grammar.o)
 
 $(LIB)(dt_lex.o): $(BINDIR)/dt_grammar.h $(BINDIR)/dt_lex.c $(H)
-	$(CC) $(CPPFLAGS) -c $(BINDIR)/dt_lex.c
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $(BINDIR)/dt_lex.c
 	ar rv $(LIB) dt_lex.o
 	-rm -f dt_lex.o
 $(BINDIR)/dt_lex.c: dt_lex.l
 	lex -t -v dt_lex.l > $(BINDIR)/dt_lex.c
 
 $(BINDIR)/drti.o: drti.c $(H)
-	$(CC) $(BUILD_BITS) $(CPPFLAGS) -c drti.c
+	$(CC) $(CFLAGS) $(BUILD_BITS) $(CPPFLAGS) -c drti.c
 	mv drti.o $(BINDIR)
 
 $(LIB)(dis_tables.o): ../driver/dis_tables.c $(H)
-	$(CC) $(CPPFLAGS) -Ii386 -I../driver -c ../driver/dis_tables.c
+	$(CC) $(CFLAGS) $(CPPFLAGS) -Ii386 -I../driver -c ../driver/dis_tables.c
 	ar rv $(LIB) dis_tables.o
 	-rm -f dis_tables.o
 $(LIB)(dt_names.o): dt_names.c
-	$(CC) $(CPPFLAGS) -c dt_names.c
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c dt_names.c
 	ar rv $(LIB) dt_names.o
 	-rm -f dt_names.o
 
 $(LIB)(dt_isadep.o): i386/dt_isadep.c $(H)
-	$(CC) $(CPPFLAGS) -Ii386 -I../driver -c i386/dt_isadep.c
+	$(CC) $(CFLAGS) $(CPPFLAGS) -Ii386 -I../driver -c i386/dt_isadep.c
 	ar rv $(LIB) dt_isadep.o
 	-rm -f dt_isadep.o
 clean:

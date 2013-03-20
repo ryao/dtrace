@@ -46,7 +46,7 @@ $(BINDIR)/dtrace.o: dtrace.c
 	mv dtrace.o $(BINDIR)
 
 $(BINDIR)/dwarf: ../../driver/dwarf.c
-	$(CC) -o $(BINDIR)/dwarf ../../driver/dwarf.c -lelf
+	$(CC) $(LDFLAGS) -o $(BINDIR)/dwarf ../../driver/dwarf.c -lelf
 
 test:
 	./dtrace -x nolibs -n BEGIN -e -S
