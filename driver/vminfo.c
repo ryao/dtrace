@@ -132,7 +132,9 @@ void vminfo_init(void)
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 38)
 	sdt_add_locator(vm_event_addr(KSWAPD_LOW_WMARK_HIT_QUICKLY), "vminfo:::kswapd_low_wmark_hit_quickly");
 	sdt_add_locator(vm_event_addr(KSWAPD_HIGH_WMARK_HIT_QUICKLY), "vminfo:::kswapd_high_wmark_hit_quickly");
+#if LINUX_VERSION_CODE < KERNEL_VERSION(3, 9, 0)
 	sdt_add_locator(vm_event_addr(KSWAPD_SKIP_CONGESTION_WAIT), "vminfo:::kswapd_skip_congestion_wait");
+#endif
 #endif
 	sdt_add_locator(vm_event_addr(PAGEOUTRUN), "vminfo:::pageoutrun");
 	sdt_add_locator(vm_event_addr(ALLOCSTALL), "vminfo:::allocstall");
